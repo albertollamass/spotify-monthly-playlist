@@ -1,0 +1,15 @@
+{
+    "sqltools.connections": [
+        {
+            "ssh": "Disabled",
+            "previewLimit": 50,
+            "server": "localhost",
+            "port": 5432,
+            "driver": "PostgreSQL",
+            "name": "spotify-monthly-postgres",
+            "database": "spotify_monthly",
+            "username": "spotify_app",
+            "password": "spotify_pass"
+        }
+    ]
+}

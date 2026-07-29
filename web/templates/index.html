@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="csrf-token" content="{{.CSRFToken}}" />
+  <title>Spotify Monthly Playlist</title>
+  <style>
+    :root {
+      --bg-1: #f7f2e9;
+      --bg-2: #dbe8d8;
+      --surface: #ffffff;
+      --text: #10211a;
+      --accent: #1e8a5a;
+      --accent-2: #0f5132;
+      --danger: #b53434;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: "Avenir Next", "Segoe UI", sans-serif;
+      background: radial-gradient(circle at 0% 0%, var(--bg-1), transparent 40%), radial-gradient(circle at 100% 100%, var(--bg-2), transparent 35%), #f2f7f3;
+      color: var(--text);
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+    .card {
+      width: min(920px, 100%);
+      background: var(--surface);
+      border-radius: 20px;
+      padding: 24px;
+      box-shadow: 0 18px 40px rgba(16, 33, 26, 0.12);
+    }
+    h1 { margin-top: 0; }
+    .row { display: flex; gap: 12px; flex-wrap: wrap; margin: 12px 0; }
+    button {
+      border: 0;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 12px;
+      padding: 10px 14px;
+      cursor: pointer;
+      font-weight: 700;
+    }
+    button.secondary { background: var(--accent-2); }
+    button.danger { background: var(--danger); }
+    .muted { opacity: 0.8; }
+    .msg { margin: 8px 0; color: var(--accent-2); font-weight: 700; }
+    textarea {
+      width: 100%;
+      min-height: 72px;
+      border-radius: 10px;
+      border: 1px solid #c8d9ce;
+      padding: 10px;
+    }
+    pre {
+      background: #0b1f17;
+      color: #d9f5e7;
+      border-radius: 10px;
+      padding: 10px;
+      overflow: auto;
+    }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>Spotify Monthly Playlist</h1>
+    {{if .Message}}<div class="msg">{{.Message}}</div>{{end}}
+
+    {{if .LoggedIn}}
+      <p>Conectado como: <strong>{{.SpotifyUser}}</strong></p>
+      <form method="post" action="/auth/logout">
+        <input type="hidden" name="csrf_token" value="{{.CSRFToken}}" />
+        <button class="danger" type="submit">Cerrar sesion</button>
+      </form>
+      <p class="muted">Meses: usa formato YYYY-MM separados por coma. Ejemplo: 2026-02,2026-03. Tip: pulsa "Ver meses disponibles" o deja este campo vacio y se autocompletan.</p>
+      <textarea id="months" placeholder="2026-04,2026-05"></textarea>
+      <div class="row">
+        <button id="syncBtn">Sincronizar historial reciente</button>
+        <button id="syncTopBtn" class="secondary">Sincronizar top tracks (4 sem)</button>
+        <button id="monthsBtn" class="secondary">Ver meses disponibles</button>
+        <button id="previewBtn" class="secondary">Ver pistas del mes (BD)</button>
+        <button id="monthlyBtn">Crear playlist mensual</button>
+        <button id="recoBtn" class="secondary">Crear playlist recomendaciones</button>
+        <button id="testBtn" class="danger">TEST: añadir 1 cancion</button>
+      </div>
+      <pre id="output">Listo.</pre>
+    {{else}}
+      <p>Inicia sesion para conectar tu cuenta y empezar a generar playlists.</p>
+      <a href="/auth/login"><button>Conectar con Spotify</button></a>
+    {{end}}
+  </main>
+
+  <script src="/static/app.js" defer></script>
+</body>
+</html>
